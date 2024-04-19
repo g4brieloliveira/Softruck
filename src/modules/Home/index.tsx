@@ -8,23 +8,22 @@ import {
   View,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { StyleSheet } from "react-native";
-import data from "../../api/frontend_data_gps.json";
 import { useEffect, useState } from "react";
-import { car1 } from "../../assets/cars/car1";
 import MapViewDirections from "react-native-maps-directions";
 import { useTheme } from "../../contexts/Theme";
-import { Course, Position } from "./types";
+import { Position } from "./types";
 import { styles } from "./style";
+import { useCourse } from "../../contexts/Course";
+import { useIcon } from "../../contexts/Icon";
 
 export default function Home() {
   const GOOGLE_MAPS_APIKEY = "AIzaSyDA4LcLSa4V7n1oQE3XPV7FBkgBAupXFgM";
   const { colors } = useTheme();
-  const [course, setCourse] = useState(data.courses[0] as Course);
+  const { course } = useCourse();
+  const { car } = useIcon();
   const [index, setIndex] = useState(0 as number);
   const [isModalVisible, setIsModalVisible] = useState(false as boolean);
   const [destinationIndex, setDestinationIndex] = useState(0 as number);
-
   const [currentPosition, setCurrentPosition] = useState([] as Position);
   const [destinations, setDestinations] = useState([] as Position[]);
   const [currentDestination, setCurrentDestination] = useState([] as Position);
@@ -82,21 +81,21 @@ export default function Home() {
   const getCarImageByDegree = (degree: number) => {
     switch (true) {
       case degree >= degrees.northNorthEast && degree < degrees.eastNorthEast:
-        return car1.northeast;
+        return car.northeast;
       case degree >= degrees.eastNorthEast && degree < degrees.eastSouthEast:
-        return car1.east;
+        return car.east;
       case degree >= degrees.eastSouthEast && degree < degrees.southSouthEast:
-        return car1.southeast;
+        return car.southeast;
       case degree >= degrees.southSouthEast && degree < degrees.southSouthWest:
-        return car1.south;
+        return car.south;
       case degree >= degrees.southSouthWest && degree < degrees.westSouthWest:
-        return car1.southwest;
+        return car.southwest;
       case degree >= degrees.westSouthWest && degree < degrees.westNorthWest:
-        return car1.west;
+        return car.west;
       case degree >= degrees.westNorthWest && degree < degrees.northNorthWest:
-        return car1.northwest;
+        return car.northwest;
       default:
-        return car1.north;
+        return car.north;
     }
   };
 
@@ -129,8 +128,27 @@ export default function Home() {
     }
   }, [currentPosition, started]);
 
-  if (!currentPosition.length) {
-    return null;
+  useEffect(() => {
+    setDestinationIndex(0);
+    setIndex(0);
+    setStarted(false);
+    setIsModalVisible(false);
+    setCurrentPosition([
+      course.stop_points.coordinates[0][0],
+      course.stop_points.coordinates[0][1],
+    ]);
+    setCurrentDestination([
+      course.stop_points.coordinates[1][0],
+      course.stop_points.coordinates[1][1],
+    ]);
+  }, [course]);
+
+  if (!course || !course.gps || !course.stop_points || !car) {
+    return (
+      <View style={styles.container}>
+        <Text>Carregando...</Text>
+      </View>
+    );
   }
 
   return (
@@ -189,7 +207,10 @@ export default function Home() {
               }}
             >
               <Image
-                source={getCarImageByDegree(course.gps[index]?.direction || 0)}
+                source={
+                  getCarImageByDegree(course.gps[index]?.direction || 0) ||
+                  car.north
+                }
               />
             </Marker>
           </MapView>

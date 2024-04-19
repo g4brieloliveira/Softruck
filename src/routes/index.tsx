@@ -20,15 +20,15 @@ function MainNavigator() {
 
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Settings"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarLabel: t(route.name),
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.tabBackground,
         },
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+          let iconName: typeof Ionicons.defaultProps.name = "";
 
           if (route.name === "Home") {
             iconName = focused ? "map" : "map-outline";
@@ -37,7 +37,7 @@ function MainNavigator() {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: colors.primary,
+        tabBarActiveTintColor: colors.tabIcon,
         tabBarInactiveTintColor: "gray",
       })}
     >
