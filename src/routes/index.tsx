@@ -1,18 +1,14 @@
 import * as React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../modules/Home";
 import Settings from "../modules/Settings";
-import Onboarding from "../modules/Onboarding";
-import { StackRoutes } from "./types";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../contexts/Theme";
 
-const Stack = createNativeStackNavigator<StackRoutes>();
 const Tab = createBottomTabNavigator();
 
-function MainNavigator() {
+export default function Routes() {
   const { t } = useTranslation("translation", {
     keyPrefix: "tab",
   });
@@ -44,20 +40,5 @@ function MainNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
-  );
-}
-
-export default function Routes() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Onboarding"
-      screenOptions={{
-        headerShown: false,
-        animation: "slide_from_right",
-      }}
-    >
-      <Stack.Screen name="Onboarding" component={Onboarding} />
-      <Stack.Screen name="MainNavigator" component={MainNavigator} />
-    </Stack.Navigator>
   );
 }

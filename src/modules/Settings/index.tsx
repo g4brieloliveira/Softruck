@@ -7,8 +7,13 @@ import { useCourse } from "../../contexts/Course";
 import { Course } from "../../contexts/Course/types";
 import { useIcon } from "../../contexts/Icon";
 import { cars } from "../../assets/cars";
+import { styles } from "./styles";
+import { useTranslation } from "react-i18next";
 
 export default function Settings() {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "settings",
+  });
   const { colors, spacing } = useTheme();
   const { setCourse } = useCourse();
   const { setIcon } = useIcon();
@@ -27,100 +32,39 @@ export default function Settings() {
 
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-      }}
+      style={[styles.container, { backgroundColor: colors.background }]}
     >
       <StatusBar
         barStyle={
           colors.background === "#fff" ? "dark-content" : "light-content"
         }
       />
-      <View
-        style={{
-          padding: spacing.large,
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: "row",
-        }}
-      >
+      <View style={[styles.infosContainer, { padding: spacing.large }]}>
         <Image
           source={{ uri: data.vehicle.picture.address }}
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 50,
-            borderWidth: 3,
-            borderColor: data.vehicle.color,
-          }}
+          style={[styles.vehicleImage, { borderColor: data.vehicle.color }]}
         />
-        <View
-          style={{
-            width: "65%",
-            alignItems: "flex-end",
-          }}
-        >
+        <View style={styles.infos}>
           <View
-            style={{
-              alignItems: "flex-end",
-              marginBottom: spacing.small,
-            }}
+            style={[styles.plateContainer, { marginBottom: spacing.small }]}
           >
-            <Text
-              style={{
-                color: colors.text,
-                fontSize: 12,
-                fontWeight: "bold",
-              }}
-            >
-              PLACA
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              {t("PLACA")}
             </Text>
 
             <View
-              style={{
-                height: 50,
-                width: 140,
-                backgroundColor: colors.white,
-                borderWidth: 2,
-                borderColor: colors.black,
-                borderRadius: 8,
-              }}
+              style={[
+                styles.plate,
+                { backgroundColor: colors.white, borderColor: colors.black },
+              ]}
             >
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderTopLeftRadius: 6,
-                  borderTopRightRadius: 6,
-                  paddingTop: 3,
-                  backgroundColor: "#0636A1",
-                }}
-              >
-                <Text
-                  style={{
-                    color: colors.white,
-                    fontSize: 8,
-                    fontWeight: "bold",
-                  }}
-                >
-                  BRASIL
+              <View style={styles.countryContainer}>
+                <Text style={[styles.country, { color: colors.white }]}>
+                  {t("BRASIL")}
                 </Text>
               </View>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingTop: 4,
-                }}
-              >
-                <Text
-                  style={{
-                    color: colors.black,
-                    fontSize: 20,
-                    fontWeight: "bold",
-                  }}
-                >
+              <View style={styles.plateNumberContainer}>
+                <Text style={[styles.plateNumber, { color: colors.black }]}>
                   {data.vehicle.plate}
                 </Text>
               </View>
@@ -132,33 +76,17 @@ export default function Settings() {
               alignItems: "flex-end",
             }}
           >
-            <Text
-              style={{
-                color: colors.text,
-                fontSize: 12,
-                fontWeight: "bold",
-              }}
-            >
-              COR PRINCIPAL
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              {t("COR PRINCIPAL")}
             </Text>
 
             <View
-              style={{
-                height: 30,
-                width: 140,
-                borderRadius: 6,
-                backgroundColor: data.vehicle.color,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              style={[
+                styles.colorContainer,
+                { backgroundColor: data.vehicle.color },
+              ]}
             >
-              <Text
-                style={{
-                  color: colors.black,
-                  fontSize: 12,
-                  fontWeight: "bold",
-                }}
-              >
+              <Text style={[styles.colorHex, { color: colors.black }]}>
                 {data.vehicle.color}
               </Text>
             </View>
@@ -171,20 +99,14 @@ export default function Settings() {
           padding: spacing.large,
         }}
       >
-        <Text
-          style={{
-            color: colors.text,
-            fontSize: 12,
-            fontWeight: "bold",
-          }}
-        >
-          ROTA SELECIONADA
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+          {t("ROTA SELECIONADA")}
         </Text>
         <Select
           selectedValue={String(selectedRoute)}
           minWidth="200"
-          accessibilityLabel="Selecione a rota"
-          placeholder="Selecione a rota"
+          accessibilityLabel={t("Selecione a rota")}
+          placeholder={t("Selecione a rota")}
           color={colors.text}
           _selectedItem={{
             bg: colors.primary,
@@ -198,7 +120,7 @@ export default function Settings() {
           {data.courses.map((course, index) => (
             <Select.Item
               key={index}
-              label={`Rota ${index + 1}`}
+              label={`${t("Rota")} ${index + 1}`}
               value={String(index)}
             />
           ))}
@@ -210,27 +132,15 @@ export default function Settings() {
           padding: spacing.large,
         }}
       >
-        <Text
-          style={{
-            color: colors.text,
-            fontSize: 12,
-            fontWeight: "bold",
-          }}
-        >
-          ICONE DO VEÍCULO
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+          {t("ICONE DO VEÍCULO")}
         </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
+        <View style={styles.carSelectionContainer}>
           <Select
             selectedValue={String(selectedCar)}
             minWidth="200"
-            accessibilityLabel="Selecione o icone do veículo"
-            placeholder="Selecione o icone do veículo"
+            accessibilityLabel={t("Selecione o icone do veículo")}
+            placeholder={t("Selecione o icone do veículo")}
             color={colors.text}
             _selectedItem={{
               bg: colors.primary,
@@ -241,20 +151,13 @@ export default function Settings() {
             {Object.keys(cars).map((car, index) => (
               <Select.Item
                 key={index}
-                label={`Opção ${index + 1}`}
+                label={`${t("Opção")} ${index + 1}`}
                 value={String(index)}
               />
             ))}
           </Select>
 
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              width: 50,
-              height: 50,
-            }}
-          >
+          <View style={styles.carContainer}>
             <Image
               source={cars[`car${selectedCar + 1}`]?.northwest}
               style={{

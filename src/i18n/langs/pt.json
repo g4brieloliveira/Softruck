@@ -8,6 +8,16 @@
       "Entrar": "Entrar"
     },
     "home": {},
-    "settings": {}
+    "settings": {
+      "PLACA": "PLACA",
+      "BRASIL": "BRASIL",
+      "COR PRINCIPAL": "COR PRINCIPAL",
+      "ROTA SELECIONADA": "ROTA SELECIONADA",
+      "Selecione a rota": "Selecione a rota",
+      "Rota": "Rota",
+      "ICONE DO VEÍCULO": "ICONE DO VEÍCULO",
+      "Selecione o icone do veículo": "Selecione o icone do veículo",
+      "Opção": "Opção"
+    }
   }
 }

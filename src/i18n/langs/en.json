@@ -8,6 +8,16 @@
       "Entrar": "Log In"
     },
     "home": {},
-    "settings": {}
+    "settings": {
+      "PLACA": "PLATE",
+      "BRASIL": "BRAZIL",
+      "COR PRINCIPAL": "MAIN COLOR",
+      "ROTA SELECIONADA": "SELECTED ROUTE",
+      "Selecione a rota": "Select the route",
+      "Rota": "Route",
+      "ICONE DO VEÍCULO": "VEHICLE ICON",
+      "Selecione o icone do veículo": "Select the vehicle icon",
+      "Opção": "Option"
+    }
   }
 }

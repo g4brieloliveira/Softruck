@@ -3,6 +3,7 @@ import {
   Image,
   Modal,
   SafeAreaView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -18,11 +19,10 @@ import { useIcon } from "../../contexts/Icon";
 
 export default function Home() {
   const GOOGLE_MAPS_APIKEY = "AIzaSyDA4LcLSa4V7n1oQE3XPV7FBkgBAupXFgM";
-  const { colors } = useTheme();
+  const { colors, spacing } = useTheme();
   const { course } = useCourse();
   const { car } = useIcon();
   const [index, setIndex] = useState(0 as number);
-  const [isModalVisible, setIsModalVisible] = useState(false as boolean);
   const [destinationIndex, setDestinationIndex] = useState(0 as number);
   const [currentPosition, setCurrentPosition] = useState([] as Position);
   const [destinations, setDestinations] = useState([] as Position[]);
@@ -48,7 +48,6 @@ export default function Home() {
 
     if (hasArrived) {
       setDestinationIndex((prev) => prev + 1);
-      setIsModalVisible(true);
     }
 
     if (!!hasArrived && destinations.length > 1) {
@@ -132,7 +131,6 @@ export default function Home() {
     setDestinationIndex(0);
     setIndex(0);
     setStarted(false);
-    setIsModalVisible(false);
     setCurrentPosition([
       course.stop_points.coordinates[0][0],
       course.stop_points.coordinates[0][1],
@@ -214,85 +212,47 @@ export default function Home() {
               />
             </Marker>
           </MapView>
-          <Button title="Iniciar trajeto" onPress={() => setStarted(true)} />
+          {!started && (
+            <TouchableOpacity
+              onPress={() => setStarted(true)}
+              style={{
+                backgroundColor: `${colors.background}b`,
+                padding: spacing.medium,
+                borderRadius: 24,
+                borderWidth: 2,
+                borderColor: colors.primary,
+                marginBottom: spacing.medium,
+              }}
+            >
+              <Text
+                style={{
+                  color: colors.primary,
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                Iniciar Trajeto
+              </Text>
+            </TouchableOpacity>
+          )}
           <View
-            style={[styles.speedContainer, { borderColor: colors.background }]}
+            style={[
+              styles.speedContainer,
+              {
+                borderColor: colors.background,
+                backgroundColor: colors.primary,
+              },
+            ]}
           >
-            <Text>{Math.round(course.gps[index].speed)}</Text>
+            <Text style={[styles.speed, { color: colors.text }]}>
+              {Math.round(course.gps[index]?.speed)}
+            </Text>
+            <Text style={[styles.kilometers, { color: colors.text }]}>
+              km/h
+            </Text>
           </View>
         </View>
       </SafeAreaView>
-      <Modal visible={isModalVisible}>
-        <SafeAreaView style={styles.modalContainer}>
-          <>
-            <View
-              style={[
-                styles.textContainer,
-                {
-                  backgroundColor: colors.background,
-                  borderColor: colors.background,
-                },
-              ]}
-            >
-              <Text style={[styles.text, { color: colors.text }]}>
-                {destinationIndex < course.stops - 1
-                  ? "Você chegou na " +
-                    destinationIndex +
-                    "ª de " +
-                    (course.stops - 1) +
-                    " paradas do trajeto!"
-                  : "Trajeto finalizado!"}
-              </Text>
-            </View>
-            {destinationIndex < course.stops - 1 && (
-              <View
-                style={[
-                  styles.buttonsContainer,
-                  { borderColor: colors.background },
-                ]}
-              >
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    {
-                      backgroundColor: "#00ff40",
-                      borderBottomLeftRadius: 10,
-                      borderRightWidth: 1,
-                      borderColor: colors.background,
-                    },
-                  ]}
-                  onPress={() => setIsModalVisible(false)}
-                >
-                  <Text
-                    style={{
-                      color: colors.text,
-                    }}
-                  >
-                    Continuar
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    {
-                      backgroundColor: "#f00",
-                      borderBottomRightRadius: 10,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={{
-                      color: colors.text,
-                    }}
-                  >
-                    Finalizar trajeto
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </>
-        </SafeAreaView>
-      </Modal>
     </>
   );
 }
