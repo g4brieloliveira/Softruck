@@ -33,5 +33,13 @@ export const styles = StyleSheet.create({
   kilometers: {
     fontWeight: "bold",
     fontSize: 8,
+  },
+  button: {
+    borderRadius: 24,
+    borderWidth: 2,
+  },
+  buttonLabel: {
+    fontSize: 18,
+    fontWeight: "bold",
   }
 })

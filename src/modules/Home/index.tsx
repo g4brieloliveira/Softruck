@@ -16,8 +16,12 @@ import { Position } from "./types";
 import { styles } from "./style";
 import { useCourse } from "../../contexts/Course";
 import { useIcon } from "../../contexts/Icon";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "home",
+  });
   const GOOGLE_MAPS_APIKEY = "AIzaSyDA4LcLSa4V7n1oQE3XPV7FBkgBAupXFgM";
   const { colors, spacing } = useTheme();
   const { course } = useCourse();
@@ -144,7 +148,7 @@ export default function Home() {
   if (!course || !course.gps || !course.stop_points || !car) {
     return (
       <View style={styles.container}>
-        <Text>Carregando...</Text>
+        <Text>{t("Carregando...")}</Text>
       </View>
     );
   }
@@ -215,23 +219,18 @@ export default function Home() {
           {!started && (
             <TouchableOpacity
               onPress={() => setStarted(true)}
-              style={{
-                backgroundColor: `${colors.background}b`,
-                padding: spacing.medium,
-                borderRadius: 24,
-                borderWidth: 2,
-                borderColor: colors.primary,
-                marginBottom: spacing.medium,
-              }}
+              style={[
+                styles.button,
+                {
+                  backgroundColor: `${colors.background}b`,
+                  padding: spacing.medium,
+                  borderColor: colors.primary,
+                  marginBottom: spacing.medium,
+                },
+              ]}
             >
-              <Text
-                style={{
-                  color: colors.primary,
-                  fontSize: 18,
-                  fontWeight: "bold",
-                }}
-              >
-                Iniciar Trajeto
+              <Text style={[styles.buttonLabel, { color: colors.primary }]}>
+                {t("Iniciar Trajeto")}
               </Text>
             </TouchableOpacity>
           )}

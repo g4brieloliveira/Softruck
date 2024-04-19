@@ -7,7 +7,10 @@
     "onboarding": {
       "Entrar": "Entrar"
     },
-    "home": {},
+    "home": {
+      "Carregando...": "Carregando...",
+      "Iniciar Trajeto": "Iniciar Trajeto"
+    },
     "settings": {
       "PLACA": "PLACA",
       "BRASIL": "BRASIL",
