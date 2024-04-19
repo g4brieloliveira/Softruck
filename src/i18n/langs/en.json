@@ -1,5 +1,9 @@
 {
   "translation": {
+    "tab": {
+      "Home": "Route",
+      "Settings": "Settings"
+    },
     "onboarding": {
       "Entrar": "Log In"
     },

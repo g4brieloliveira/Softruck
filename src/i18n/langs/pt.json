@@ -1,5 +1,9 @@
 {
   "translation": {
+    "tab": {
+      "Home": "Rota",
+      "Settings": "Configurações"
+    },
     "onboarding": {
       "Entrar": "Entrar"
     },
